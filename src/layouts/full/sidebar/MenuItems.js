@@ -56,13 +56,14 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Fornecedores',
     icon: IconAperture,
-    href: '/fornecedores',
+    href: '/fornecedor',
   },
+ 
   {
     id: uniqueId(),
-    title: 'Estoque',
+    title: 'Produtos',
     icon: IconAperture,
-    href: '/estoque',
+    href: '/produtos',
   },
   
  /* {

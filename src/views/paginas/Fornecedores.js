@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
-import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon, Edit as EditIcon, Add as AddIcon, List as ListIcon } from '@mui/icons-material';
 import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
 import FornecedorService from '../../services/fornecedor.service';
+import ProdutoService from '../../services/produto.service';
 
-const SamplePage = () => {
+const Fornecedor = () => {
   const [fornecedores, setFornecedores] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openProduto, setOpenProduto] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentFornecedor, setCurrentFornecedor] = useState({ id: null, nome: '', email: '', cnpj: '', telefone: '', tipoProduto: '' });
+  const [currentProduto, setCurrentProduto] = useState({ id: null, nome: '', valor: '', quantidade: '', fornecedor: '' });
+  const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
     retrieveFornecedores();
@@ -19,6 +23,17 @@ const SamplePage = () => {
     FornecedorService.getAll()
       .then(response => {
         setFornecedores(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const retrieveProdutos = (fornecedor) => {
+    ProdutoService.getAll()
+      .then(response => {
+        const produtosDoFornecedor = response.data.filter(produto => produto.fornecedor === fornecedor.nome);
+        setProdutos(produtosDoFornecedor);
       })
       .catch(e => {
         console.log(e);
@@ -37,13 +52,32 @@ const SamplePage = () => {
     setOpen(true);
   };
 
+  const handleClickCreateProduct = (fornecedor) => {
+    setCurrentProduto({ id: null, nome: '', valor: '', quantidade: '', fornecedor: fornecedor.nome });
+    setOpenProduto(true);
+  };
+
+  const handleClickShowProducts = (fornecedor) => {
+    retrieveProdutos(fornecedor);
+    setCurrentFornecedor(fornecedor);
+  };
+
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseProduto = () => {
+    setOpenProduto(false);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCurrentFornecedor({ ...currentFornecedor, [name]: value });
+  };
+
+  const handleChangeProduto = (e) => {
+    const { name, value } = e.target;
+    setCurrentProduto({ ...currentProduto, [name]: value });
   };
 
   const saveFornecedor = () => {
@@ -66,6 +100,16 @@ const SamplePage = () => {
           console.log(e);
         });
     }
+  };
+
+  const saveProduto = () => {
+    ProdutoService.create(currentProduto)
+      .then(response => {
+        handleCloseProduto();
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   const deleteFornecedor = (id) => {
@@ -102,6 +146,12 @@ const SamplePage = () => {
                 </IconButton>
                 <IconButton color="secondary" onClick={() => deleteFornecedor(fornecedor.id)}>
                   <DeleteIcon />
+                </IconButton>
+                <IconButton color="primary" onClick={() => handleClickCreateProduct(fornecedor)}>
+                  <AddIcon />
+                </IconButton>
+                <IconButton color="primary" onClick={() => handleClickShowProducts(fornecedor)}>
+                  <ListIcon />
                 </IconButton>
               </Box>
             </Box>
@@ -168,8 +218,68 @@ const SamplePage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog open={openProduto} onClose={handleCloseProduto}>
+        <DialogTitle>Criar Produto para {currentProduto.fornecedor}</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="nome"
+            label="Nome"
+            type="text"
+            fullWidth
+            value={currentProduto.nome}
+            onChange={handleChangeProduto}
+          />
+          <TextField
+            margin="dense"
+            name="valor"
+            label="Valor"
+            type="number"
+            fullWidth
+            value={currentProduto.valor}
+            onChange={handleChangeProduto}
+          />
+          <TextField
+            margin="dense"
+            name="quantidade"
+            label="Quantidade"
+            type="number"
+            fullWidth
+            value={currentProduto.quantidade}
+            onChange={handleChangeProduto}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseProduto} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={saveProduto} color="primary">
+            Criar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {produtos.length > 0 && (
+        <DashboardCard title={`Produtos de ${currentFornecedor.nome}`}>
+          <Box mt={2}>
+            {produtos.map(produto => (
+              <Box key={produto.id} display="flex" alignItems="center" justifyContent="space-between" p={2} borderBottom="1px solid #ccc">
+                <Box>
+                  <Typography variant="h6">{produto.nome}</Typography>
+                  <Typography variant="body2">Valor: {produto.valor}</Typography>
+                  <Typography variant="body2">Quantidade: {produto.quantidade}</Typography>
+                  <Typography variant="body2">Fornecedor: {produto.fornecedor}</Typography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </DashboardCard>
+      )}
     </PageContainer>
   );
 };
 
-export default SamplePage;
+export default Fornecedor;
+

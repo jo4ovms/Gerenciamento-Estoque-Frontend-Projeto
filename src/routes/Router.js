@@ -10,7 +10,8 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 
 /* ****Pages***** */
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')));
-const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')));
+const Fornecedores = Loadable(lazy(() => import('../views/paginas/Fornecedores')));
+const ProdutoPage = Loadable(lazy(() => import('../views/paginas/ProdutoPage')));
 const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
 const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
 const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')));
@@ -29,10 +30,8 @@ const Router = [
         children: [
           { path: '/', element: <Navigate to="/dashboard" /> },
           { path: '/dashboard', exact: true, element: <Dashboard /> },
-          { path: '/sample-page', exact: true, element: <SamplePage /> },
-          { path: '/icons', exact: true, element: <Icons /> },
-          { path: '/ui/typography', exact: true, element: <TypographyPage /> },
-          { path: '/ui/shadow', exact: true, element: <Shadow /> },
+          { path: '/Fornecedor', exact: true, element: <Fornecedores /> },
+          { path: '/produtos', exact: true, element: <ProdutoPage /> },
           { path: '*', element: <Navigate to="/auth/404" /> },
         ],
       },
