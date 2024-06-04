@@ -19,6 +19,10 @@ class ProdutoService {
   delete(id) {
     return axios.delete(`${API_URL}/${id}`, { headers: authHeader() });
   }
+  getAbaixoDaQuantidadeSegura() {
+    return axios.get(API_URL + '/abaixo-da-quantidade-segura', { headers: authHeader() });
+  }
 }
+
 
 export default new ProdutoService();

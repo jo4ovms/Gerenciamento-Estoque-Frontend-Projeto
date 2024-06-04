@@ -4,12 +4,11 @@ import PageContainer from 'src/components/container/PageContainer';
 
 // components
 import SalesOverview from './components/SalesOverview';
-import YearlyBreakup from './components/YearlyBreakup';
+import ProdutosAbaixoQuantidadeSegura from './components/ProdutosAbaixoQuantidadeSegura';
 import RecentTransactions from './components/RecentTransactions';
 import ProductPerformance from './components/ProductPerformance';
 import Blog from './components/Blog';
 import MonthlyEarnings from './components/MonthlyEarnings';
-
 
 const Dashboard = () => {
   return (
@@ -22,7 +21,7 @@ const Dashboard = () => {
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <YearlyBreakup />
+                <ProdutosAbaixoQuantidadeSegura />
               </Grid>
               <Grid item xs={12}>
                 <MonthlyEarnings />
