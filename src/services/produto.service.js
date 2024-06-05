@@ -22,7 +22,7 @@ class ProdutoService {
   getAbaixoDaQuantidadeSegura() {
     return axios.get(API_URL + '/abaixo-da-quantidade-segura', { headers: authHeader() });
   }
-}
+  }
 
 
 export default new ProdutoService();

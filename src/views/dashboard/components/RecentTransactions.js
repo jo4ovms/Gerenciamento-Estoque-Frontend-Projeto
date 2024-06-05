@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import {
   Timeline,
@@ -10,91 +10,77 @@ import {
   TimelineContent,
   timelineOppositeContentClasses,
 } from '@mui/lab';
-import { Link, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import LogService from '../../../services/log.service';
+import '../../../styles/RecentTransactions.css'; // Importando o arquivo CSS
 
 const RecentTransactions = () => {
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    retrieveLogs();
+  }, []);
+
+  const retrieveLogs = () => {
+    LogService.getAll()
+      .then(response => {
+        const sortedLogs = response.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        setLogs(sortedLogs);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const getDotColor = (action) => {
+    switch (action) {
+      case 'CREATE':
+        return 'primary';
+      case 'UPDATE':
+        return 'warning';
+      case 'DELETE':
+        return 'error';
+      default:
+        return 'grey';
+    }
+  };
+
   return (
-    <DashboardCard title="Recent Transactions">
-      <>
-        <Timeline
-          className="theme-timeline"
-          nonce={undefined}
-          onResize={undefined}
-          onResizeCapture={undefined}
-          sx={{
-            p: 0,
-            mb: '-40px',
-            '& .MuiTimelineConnector-root': {
-              width: '1px',
-              backgroundColor: '#efefef'
-            },
-            [`& .${timelineOppositeContentClasses.root}`]: {
-              flex: 0.5,
-              paddingLeft: 0,
-            },
-          }}
-        >
-          <TimelineItem>
-            <TimelineOppositeContent>09:30 am</TimelineOppositeContent>
+    <DashboardCard title="Recent Activities">
+      <Timeline
+        className="theme-timeline"
+        sx={{
+          p: 0,
+          mb: '-40px',
+          '& .MuiTimelineConnector-root': {
+            width: '1px',
+            backgroundColor: '#efefef',
+          },
+          [`& .${timelineOppositeContentClasses.root}`]: {
+            flex: 0.5,
+            paddingLeft: 0,
+          },
+        }}
+      >
+        {logs.slice(0, 5).map((log, index) => (
+          <TimelineItem key={index}>
+            <TimelineOppositeContent sx={{ paddingRight: '12px' }}>
+              <Typography color="textSecondary" variant="body2">
+                {new Date(log.timestamp).toLocaleTimeString()}
+              </Typography>
+            </TimelineOppositeContent>
             <TimelineSeparator>
-              <TimelineDot color="primary" variant="outlined" />
-              <TimelineConnector />
+              <TimelineDot color={getDotColor(log.action)} variant="outlined" />
+              {index < logs.length - 1 && <TimelineConnector />}
             </TimelineSeparator>
-            <TimelineContent>Payment received from John Doe of $385.90</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent>10:00 am</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot color="secondary" variant="outlined" />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <Typography fontWeight="600">New sale recorded</Typography>{' '}
-              <Link href="/" underline="none">
-                #ML-3467
-              </Link>
+            <TimelineContent sx={{ paddingLeft: '12px', paddingRight: '12px' }}>
+              <Typography variant="subtitle2" fontWeight="600">{log.entity}</Typography>
+              <Typography variant="body2">{log.action}</Typography>
+              <Typography variant="body2">{log.details}</Typography>
             </TimelineContent>
           </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent>12:00 am</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot color="success" variant="outlined" />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>Payment was made of $64.95 to Michael</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent>09:30 am</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot color="warning" variant="outlined" />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <Typography fontWeight="600">New sale recorded</Typography>{' '}
-              <Link href="/" underline="none">
-                #ML-3467
-              </Link>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent>09:30 am</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot color="error" variant="outlined" />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <Typography fontWeight="600">New arrival recorded</Typography>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent>12:00 am</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot color="success" variant="outlined" />
-            </TimelineSeparator>
-            <TimelineContent>Payment Received</TimelineContent>
-          </TimelineItem>
-        </Timeline>
-      </>
+        ))}
+      </Timeline>
     </DashboardCard>
   );
 };

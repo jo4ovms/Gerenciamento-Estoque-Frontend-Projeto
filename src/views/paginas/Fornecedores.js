@@ -14,6 +14,7 @@ const Fornecedor = () => {
   const [currentFornecedor, setCurrentFornecedor] = useState({ id: null, nome: '', email: '', cnpj: '', telefone: '', tipoProduto: '' });
   const [currentProduto, setCurrentProduto] = useState({ id: null, nome: '', valor: '', quantidade: '', fornecedor: '' });
   const [produtos, setProdutos] = useState([]);
+  const [visibleProducts, setVisibleProducts] = useState({});
 
   useEffect(() => {
     retrieveFornecedores();
@@ -34,6 +35,7 @@ const Fornecedor = () => {
       .then(response => {
         const produtosDoFornecedor = response.data.filter(produto => produto.fornecedor === fornecedor.nome);
         setProdutos(produtosDoFornecedor);
+        setVisibleProducts(prev => ({ ...prev, [fornecedor.id]: true }));
       })
       .catch(e => {
         console.log(e);
@@ -58,8 +60,12 @@ const Fornecedor = () => {
   };
 
   const handleClickShowProducts = (fornecedor) => {
-    retrieveProdutos(fornecedor);
-    setCurrentFornecedor(fornecedor);
+    if (visibleProducts[fornecedor.id]) {
+      setVisibleProducts(prev => ({ ...prev, [fornecedor.id]: false }));
+    } else {
+      retrieveProdutos(fornecedor);
+      setCurrentFornecedor(fornecedor);
+    }
   };
 
   const handleClose = () => {
@@ -132,28 +138,48 @@ const Fornecedor = () => {
         </Box>
         <Box mt={2}>
           {fornecedores.map(fornecedor => (
-            <Box key={fornecedor.id} display="flex" alignItems="center" justifyContent="space-between" p={2} borderBottom="1px solid #ccc">
-              <Box>
-                <Typography variant="h6">{fornecedor.nome}</Typography>
-                <Typography variant="body2">Email: {fornecedor.email}</Typography>
-                <Typography variant="body2">CNPJ: {fornecedor.cnpj}</Typography>
-                <Typography variant="body2">Telefone: {fornecedor.telefone}</Typography>
-                <Typography variant="body2">Tipo de Produto: {fornecedor.tipoProduto}</Typography>
+            <Box key={fornecedor.id} display="flex" flexDirection="column" borderBottom="1px solid #ccc" mb={2}>
+              <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
+                <Box>
+                  <Typography variant="h6">{fornecedor.nome}</Typography>
+                  <Typography variant="body2">Email: {fornecedor.email}</Typography>
+                  <Typography variant="body2">CNPJ: {fornecedor.cnpj}</Typography>
+                  <Typography variant="body2">Telefone: {fornecedor.telefone}</Typography>
+                  <Typography variant="body2">Tipo de Produto: {fornecedor.tipoProduto}</Typography>
+                </Box>
+                <Box>
+                  <IconButton color="primary" onClick={() => handleClickEdit(fornecedor)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="secondary" onClick={() => deleteFornecedor(fornecedor.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton color="primary" onClick={() => handleClickCreateProduct(fornecedor)}>
+                    <AddIcon />
+                  </IconButton>
+                  <IconButton color="primary" onClick={() => handleClickShowProducts(fornecedor)}>
+                    <ListIcon />
+                  </IconButton>
+                </Box>
               </Box>
-              <Box>
-                <IconButton color="primary" onClick={() => handleClickEdit(fornecedor)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton color="secondary" onClick={() => deleteFornecedor(fornecedor.id)}>
-                  <DeleteIcon />
-                </IconButton>
-                <IconButton color="primary" onClick={() => handleClickCreateProduct(fornecedor)}>
-                  <AddIcon />
-                </IconButton>
-                <IconButton color="primary" onClick={() => handleClickShowProducts(fornecedor)}>
-                  <ListIcon />
-                </IconButton>
-              </Box>
+              {visibleProducts[fornecedor.id] && (
+                <Box mt={2} pl={2} pr={2} pb={2}>
+                  {produtos.length > 0 ? (
+                    produtos.map(produto => (
+                      <Box key={produto.id} display="flex" alignItems="center" justifyContent="space-between" p={2} borderBottom="1px solid #ccc">
+                        <Box>
+                          <Typography variant="h6">{produto.nome}</Typography>
+                          <Typography variant="body2">Valor: {produto.valor}</Typography>
+                          <Typography variant="body2">Quantidade: {produto.quantidade}</Typography>
+                          <Typography variant="body2">Fornecedor: {produto.fornecedor}</Typography>
+                        </Box>
+                      </Box>
+                    ))
+                  ) : (
+                    <Typography variant="body2">Nenhum produto encontrado</Typography>
+                  )}
+                </Box>
+              )}
             </Box>
           ))}
         </Box>
@@ -260,26 +286,8 @@ const Fornecedor = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {produtos.length > 0 && (
-        <DashboardCard title={`Produtos de ${currentFornecedor.nome}`}>
-          <Box mt={2}>
-            {produtos.map(produto => (
-              <Box key={produto.id} display="flex" alignItems="center" justifyContent="space-between" p={2} borderBottom="1px solid #ccc">
-                <Box>
-                  <Typography variant="h6">{produto.nome}</Typography>
-                  <Typography variant="body2">Valor: {produto.valor}</Typography>
-                  <Typography variant="body2">Quantidade: {produto.quantidade}</Typography>
-                  <Typography variant="body2">Fornecedor: {produto.fornecedor}</Typography>
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        </DashboardCard>
-      )}
     </PageContainer>
   );
 };
 
 export default Fornecedor;
-

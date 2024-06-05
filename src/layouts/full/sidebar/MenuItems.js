@@ -72,6 +72,12 @@ const Menuitems = [
     icon: IconAperture,
     href: '/sample-page',
   }, */
+  {
+    id: uniqueId(),
+    title: 'Relatórios',
+    icon: IconAperture,
+    href: '/relatorios',
+  }
 ];
 
 export default Menuitems;
