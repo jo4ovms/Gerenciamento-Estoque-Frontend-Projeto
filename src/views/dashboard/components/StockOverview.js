@@ -49,7 +49,7 @@ const StockOverview = () => {
           <IconBox width={24} />
         </Fab>
       }
-      sx={{ height: '248px', width: '103%', maxWidth: '600px' }}
+      sx={{ height: '240px', width: '103%', maxWidth: '600px' }}
     >
       <>
         <Box display="flex" flexDirection="column" alignItems="center" mb={2}>

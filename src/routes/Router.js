@@ -17,6 +17,7 @@ const ProdutosForaDeEstoque = Loadable(lazy(() => import('../views/paginas/Produ
 const ProdutosAdequados = Loadable(lazy(() => import('../views/paginas/ProdutosAdequados')));
 const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
 const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
+const RegistrarVenda = Loadable(lazy(() => import('../views/paginas/RegistrarVenda')));
 const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')));
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
@@ -39,6 +40,7 @@ const Router = [
           { path: '/produtos/abaixo-da-quantidade-segura', exact: true, element: <ProdutosAbaixoQuantidadeSeguraPage /> },
           { path: '/produtos/fora-de-estoque', exact: true, element: <ProdutosForaDeEstoque /> },
           { path: '/produtos/adequados', exact: true, element: <ProdutosAdequados /> },
+          { path: '/registrar-venda', exact: true, element: <RegistrarVenda /> },
           { path: '/produtos/:id/edit', exact: true, element: <ProdutoPage /> }, // Adicione esta linha
           {
             path: '/relatorios',

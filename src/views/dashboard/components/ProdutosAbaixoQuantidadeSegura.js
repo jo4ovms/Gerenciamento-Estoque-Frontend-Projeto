@@ -43,7 +43,7 @@ const ProdutosAbaixoQuantidadeSegura = () => {
           <IconAlertTriangle width={24} />
         </Fab>
       }
-      sx={{ height: '282px', width: '125%', maxWidth: '600px' }} // Ajuste a largura e altura aqui
+      sx={{ height: '270px', width: '125%', maxWidth: '600px' }} // Ajuste a largura e altura aqui
     >
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
         <Typography variant="h4" fontWeight="700" mb={1}>

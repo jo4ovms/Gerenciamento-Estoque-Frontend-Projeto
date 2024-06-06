@@ -77,7 +77,13 @@ const Menuitems = [
     title: 'Relatórios',
     icon: IconAperture,
     href: '/relatorios',
-  }
+  },
+  {
+    id: uniqueId(),
+    title: 'Registrar Venda',
+    icon: IconAperture,
+    href: '/registrar-venda',
+  },
 ];
 
 export default Menuitems;

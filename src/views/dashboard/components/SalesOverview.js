@@ -1,32 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Select, MenuItem } from '@mui/material';
+import { Select, MenuItem, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
-import ProdutoService from '../../../services/produto.service';
+import VendaService from '../../../services/venda.service';
 
 const SalesOverview = () => {
-  const [month, setMonth] = useState('1');
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [salesData, setSalesData] = useState([]);
+  const theme = useTheme();
+
+  useEffect(() => {
+    fetchSalesData(month);
+  }, [month]);
+
+  const fetchSalesData = (month) => {
+    VendaService.getSalesData(month)
+      .then(response => {
+        const formattedData = formatSalesData(response.data);
+        setSalesData(formattedData);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const formatSalesData = (data) => {
+    const daysInMonth = new Date(new Date().getFullYear(), month, 0).getDate();
+    const salesPerDay = Array.from({ length: daysInMonth }, (_, i) => ({ day: i + 1, sales: 0 }));
+
+    data.forEach(sale => {
+      const saleDate = new Date(sale.dataVenda);
+      salesPerDay[saleDate.getDate() - 1].sales += sale.quantidade;
+    });
+
+    return salesPerDay;
+  };
+
   const handleChange = (event) => {
     setMonth(event.target.value);
   };
-  const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary.main;
-
-  useEffect(() => {
-    // Simulação de dados de vendas, idealmente buscar da API
-    const fetchData = async () => {
-      try {
-        const response = await ProdutoService.getSalesData(month); // Adicione este método ao ProdutoService
-        setSalesData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [month]);
 
   const optionscolumnchart = {
     chart: {
@@ -36,9 +49,9 @@ const SalesOverview = () => {
       toolbar: {
         show: true,
       },
-      height: 400, // Aumentar a altura do gráfico aqui
+      height: 370,
     },
-    colors: [primary, secondary],
+    colors: [theme.palette.primary.main, theme.palette.secondary.main],
     plotOptions: {
       bar: {
         horizontal: false,
@@ -47,16 +60,24 @@ const SalesOverview = () => {
         borderRadius: [6],
         borderRadiusApplication: 'end',
         borderRadiusWhenStacked: 'all',
+        dataLabels: {
+          position: 'top', // Rótulos de dados no topo das barras
+        },
       },
     },
     stroke: {
       show: true,
-      width: 5,
-      lineCap: "butt",
+      width: 2,
       colors: ["transparent"],
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      formatter: (val) => val,
+      offsetY: -20, // Ajustar a posição dos rótulos para ficar acima das barras
+      style: {
+        fontSize: '12px',
+        colors: ["#304758"]
+      },
     },
     legend: {
       show: false,
@@ -72,16 +93,30 @@ const SalesOverview = () => {
     },
     yaxis: {
       tickAmount: 4,
+      labels: {
+        formatter: (val) => val.toFixed(0),
+      },
     },
     xaxis: {
-      categories: salesData.map(data => data.date),
+      categories: salesData.map(data => data.day),
       axisBorder: {
         show: false,
+      },
+      labels: {
+        style: {
+          colors: theme.palette.text.secondary,
+        },
       },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
       fillSeriesColor: false,
+      x: {
+        formatter: (val) => `Dia ${val}`
+      },
+      y: {
+        formatter: (val) => `${val} vendas`
+      }
     },
   };
 
@@ -93,27 +128,42 @@ const SalesOverview = () => {
   ];
 
   return (
-    <DashboardCard title="Visão Geral de Vendas" action={
-      <Select
-        labelId="month-dd"
-        id="month-dd"
-        value={month}
-        size="small"
-        onChange={handleChange}
-      >
-        <MenuItem value={1}>Março 2023</MenuItem>
-        <MenuItem value={2}>Abril 2023</MenuItem>
-        <MenuItem value={3}>Maio 2023</MenuItem>
-      </Select>
-    }>
-      <div style={{ height: '423px' }}> {/* Ajuste a altura aqui */}
+    <DashboardCard
+      title="Visão Geral de Vendas"
+      action={
+        <Select
+          labelId="month-dd"
+          id="month-dd"
+          value={month}
+          size="small"
+          onChange={handleChange}
+          sx={{ minWidth: 120 }}
+        >
+          <MenuItem value={1}>Janeiro</MenuItem>
+          <MenuItem value={2}>Fevereiro</MenuItem>
+          <MenuItem value={3}>Março</MenuItem>
+          <MenuItem value={4}>Abril</MenuItem>
+          <MenuItem value={5}>Maio</MenuItem>
+          <MenuItem value={6}>Junho</MenuItem>
+          <MenuItem value={7}>Julho</MenuItem>
+          <MenuItem value={8}>Agosto</MenuItem>
+          <MenuItem value={9}>Setembro</MenuItem>
+          <MenuItem value={10}>Outubro</MenuItem>
+          <MenuItem value={11}>Novembro</MenuItem>
+          <MenuItem value={12}>Dezembro</MenuItem>
+        </Select>
+      }
+      sx={{ height: '100%', width: '100%' }}
+    >
+      <Box sx={{ height: 400, width: '100%' }}>
         <Chart
           options={optionscolumnchart}
           series={seriescolumnchart}
           type="bar"
-          height="100%" // Garantir que o gráfico preencha 100% da altura do contêiner
+          height="100%"
+          width="100%"
         />
-      </div>
+      </Box>
     </DashboardCard>
   );
 };
