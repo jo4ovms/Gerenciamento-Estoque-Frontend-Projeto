@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
@@ -11,6 +11,9 @@ const ProdutoPage = () => {
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentProduto, setCurrentProduto] = useState({ id: null, nome: '', valor: '', quantidade: '', fornecedor: '' });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterFornecedor, setFilterFornecedor] = useState('');
+  const [fornecedores, setFornecedores] = useState([]);
   const { id } = useParams(); // Pegar o ID da URL
 
   useEffect(() => {
@@ -32,6 +35,8 @@ const ProdutoPage = () => {
     ProdutoService.getAll()
       .then(response => {
         setProdutos(response.data);
+        const uniqueFornecedores = [...new Set(response.data.map(produto => produto.fornecedor))];
+        setFornecedores(uniqueFornecedores);
       })
       .catch(e => {
         console.log(e);
@@ -57,6 +62,14 @@ const ProdutoPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCurrentProduto({ ...currentProduto, [name]: value });
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFilterFornecedorChange = (e) => {
+    setFilterFornecedor(e.target.value);
   };
 
   const saveProduto = () => {
@@ -91,16 +104,48 @@ const ProdutoPage = () => {
       });
   };
 
+  const filteredProdutos = produtos.filter(produto =>
+    produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (filterFornecedor === '' || produto.fornecedor === filterFornecedor)
+  );
+
   return (
     <PageContainer title="Produtos" description="Página de gestão de produtos">
       <DashboardCard title="Produtos">
-        <Box>
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>
-            Criar Produto
-          </Button>
-        </Box>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+  <Box display="flex" gap={2}>
+    <FormControl sx={{ marginBottom: 2, minWidth: 200 }}>
+      <InputLabel id="filter-fornecedor-label">Fornecedor</InputLabel>
+      <Select
+        labelId="filter-fornecedor-label"
+        id="filter-fornecedor"
+        value={filterFornecedor}
+        label="Fornecedor"
+        onChange={handleFilterFornecedorChange}
+      >
+        <MenuItem value="">
+          <em>Todos</em>
+        </MenuItem>
+        {Array.from(new Set(produtos.map(p => p.fornecedor))).map((fornecedor, index) => (
+          <MenuItem key={index} value={fornecedor}>{fornecedor}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+    <TextField
+      label="Pesquisar Produto"
+      variant="outlined"
+      value={searchTerm}
+      onChange={handleSearchChange}
+      sx={{ marginBottom: 2 }}
+    />
+  </Box>
+  <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    Criar Produto
+  </Button>
+</Box>
+
         <Box mt={2}>
-          {produtos.map(produto => (
+          {filteredProdutos.map(produto => (
             <Box key={produto.id} display="flex" alignItems="center" justifyContent="space-between" p={2} borderBottom="1px solid #ccc">
               <Box>
                 <Typography variant="h6">{produto.nome}</Typography>

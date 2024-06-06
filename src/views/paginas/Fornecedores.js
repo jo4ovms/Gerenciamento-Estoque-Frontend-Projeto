@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon, Add as AddIcon, List as ListIcon } from '@mui/icons-material';
 import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
 import FornecedorService from '../../services/fornecedor.service';
 import ProdutoService from '../../services/produto.service';
 
-const Fornecedor = () => {
+const FornecedorPage = () => {
   const [fornecedores, setFornecedores] = useState([]);
   const [open, setOpen] = useState(false);
   const [openProduto, setOpenProduto] = useState(false);
@@ -15,6 +15,8 @@ const Fornecedor = () => {
   const [currentProduto, setCurrentProduto] = useState({ id: null, nome: '', valor: '', quantidade: '', fornecedor: '' });
   const [produtos, setProdutos] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterTipoProduto, setFilterTipoProduto] = useState('');
 
   useEffect(() => {
     retrieveFornecedores();
@@ -40,6 +42,14 @@ const Fornecedor = () => {
       .catch(e => {
         console.log(e);
       });
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFilterTipoProdutoChange = (e) => {
+    setFilterTipoProduto(e.target.value);
   };
 
   const handleClickOpen = () => {
@@ -128,16 +138,47 @@ const Fornecedor = () => {
       });
   };
 
+  const filteredFornecedores = fornecedores.filter(fornecedor =>
+    fornecedor.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (filterTipoProduto === '' || fornecedor.tipoProduto === filterTipoProduto)
+  );
+
   return (
     <PageContainer title="Fornecedores" description="this is Sample page">
       <DashboardCard title="Fornecedores">
-        <Box>
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>
-            Criar Fornecedor
-          </Button>
-        </Box>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+  <Box display="flex" gap={2}>
+    <FormControl sx={{ marginBottom: 2, minWidth: 200 }}>
+      <InputLabel id="filter-tipo-produto-label">Tipo de Produto</InputLabel>
+      <Select
+        labelId="filter-tipo-produto-label"
+        id="filter-tipo-produto"
+        value={filterTipoProduto}
+        label="Tipo de Produto"
+        onChange={handleFilterTipoProdutoChange}
+      >
+        <MenuItem value="">
+          <em>Todos</em>
+        </MenuItem>
+        {Array.from(new Set(fornecedores.map(f => f.tipoProduto))).map((tipoProduto, index) => (
+          <MenuItem key={index} value={tipoProduto}>{tipoProduto}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+    <TextField
+      label="Pesquisar Fornecedor"
+      variant="outlined"
+      value={searchTerm}
+      onChange={handleSearchChange}
+      sx={{ marginBottom: 2, minWidth: 200 }}
+    />
+  </Box>
+  <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    Criar Fornecedor
+  </Button>
+</Box>
         <Box mt={2}>
-          {fornecedores.map(fornecedor => (
+          {filteredFornecedores.map(fornecedor => (
             <Box key={fornecedor.id} display="flex" flexDirection="column" borderBottom="1px solid #ccc" mb={2}>
               <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
                 <Box>
@@ -290,4 +331,4 @@ const Fornecedor = () => {
   );
 };
 
-export default Fornecedor;
+export default FornecedorPage;
