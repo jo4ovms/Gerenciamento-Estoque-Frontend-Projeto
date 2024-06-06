@@ -32,6 +32,15 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
   }
+
+  renewToken() {
+    const user = this.getCurrentUser();
+    return axios.post(API_URL + 'renew-token', {
+      refreshToken: user.refreshToken
+    });
+  }
+
+
 }
 
 export default new AuthService();

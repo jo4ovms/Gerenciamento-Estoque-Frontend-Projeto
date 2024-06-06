@@ -1,15 +1,15 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import authHeader from './auth-header';
 
 const API_URL = 'http://localhost:8080/api/logs';
 
 class LogService {
   getAll() {
-    return axios.get(API_URL, { headers: authHeader() });
+    return axiosInstance.get(API_URL, { headers: authHeader() });
   }
 
   getByDate(startDate, endDate) {
-    return axios.get(`${API_URL}/por-data?startDate=${startDate}&endDate=${endDate}`, { headers: authHeader() });
+    return axiosInstance.get(`${API_URL}/por-data?startDate=${startDate}&endDate=${endDate}`, { headers: authHeader() });
   }
 }
 
