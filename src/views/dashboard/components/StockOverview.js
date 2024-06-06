@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, Typography, Avatar, Fab, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 import { IconAlertTriangle, IconCheck, IconBox } from '@tabler/icons';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import ProdutoService from '../../../services/produto.service';
@@ -9,6 +10,7 @@ const StockOverview = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [lowStockItems, setLowStockItems] = useState(0);
   const [outOfStockItems, setOutOfStockItems] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStockData();
@@ -30,6 +32,10 @@ const StockOverview = () => {
       });
   };
 
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
   const theme = useTheme();
   const errorlight = '#fdede8';
   const warninglight = '#fff8e1';
@@ -39,11 +45,11 @@ const StockOverview = () => {
     <DashboardCard
       title="Visão Geral do Estoque"
       action={
-        <Fab color="secondary" size="medium" sx={{ color: '#ffffff' }}>
+        <Fab color="secondary" size="medium" sx={{ color: '#ffffff' }} onClick={() => handleNavigate('/produtos')}>
           <IconBox width={24} />
         </Fab>
       }
-      sx={{ height: '248px', width: '103%', maxWidth: '650px' }} // Ajuste a largura e altura aqui
+      sx={{ height: '248px', width: '103%', maxWidth: '600px' }}
     >
       <>
         <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
@@ -55,7 +61,7 @@ const StockOverview = () => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" onClick={() => handleNavigate('/produtos/abaixo-da-quantidade-segura')} style={{ cursor: 'pointer' }}>
             <Avatar sx={{ bgcolor: warninglight, width: 40, height: 40, mr: 2 }}>
               <IconAlertTriangle width={24} color={theme.palette.warning.main} />
             </Avatar>
@@ -66,7 +72,7 @@ const StockOverview = () => {
               </Typography>
             </Box>
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" onClick={() => handleNavigate('/produtos/fora-de-estoque')} style={{ cursor: 'pointer' }}>
             <Avatar sx={{ bgcolor: errorlight, width: 40, height: 40, mr: 2 }}>
               <IconAlertTriangle width={24} color={theme.palette.error.main} />
             </Avatar>
@@ -77,7 +83,7 @@ const StockOverview = () => {
               </Typography>
             </Box>
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" onClick={() => handleNavigate('/produtos/adequados')} style={{ cursor: 'pointer' }}>
             <Avatar sx={{ bgcolor: successlight, width: 40, height: 40, mr: 2 }}>
               <IconCheck width={24} color={theme.palette.success.main} />
             </Avatar>

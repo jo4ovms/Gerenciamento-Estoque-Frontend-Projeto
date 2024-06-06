@@ -30,7 +30,7 @@ const ProdutosAbaixoQuantidadeSeguraPage = () => {
 
   return (
     <PageContainer title="Produtos Abaixo da Quantidade Segura" description="Página de produtos abaixo da quantidade segura">
-      <DashboardCard title="Produtos em Falta">
+      <DashboardCard title="Produtos Acabando!">
         <Grid container spacing={2}>
           {produtos.length === 0 ? (
             <Typography variant="body2" color="textSecondary">

@@ -37,7 +37,7 @@ const ProdutosAbaixoQuantidadeSegura = () => {
 
   return (
     <DashboardCard
-      title="Produtos em Falta"
+      title="Produtos Acabando!"
       action={
         <Fab color="secondary" size="medium" sx={{ color: '#ffffff' }} onClick={handleViewAllClick}>
           <IconAlertTriangle width={24} />

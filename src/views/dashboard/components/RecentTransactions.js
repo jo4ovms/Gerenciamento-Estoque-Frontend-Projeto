@@ -47,7 +47,7 @@ const RecentTransactions = () => {
 
   return (
     <DashboardCard 
-      title="Recent Activities"
+      title="Atividades Recentes"
       sx={{ height: '480px', width: '100%', maxWidth: '600px', overflowY: 'auto' }} // Ajuste a largura e altura aqui
     >
       <Timeline

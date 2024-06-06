@@ -31,6 +31,14 @@ class ProdutoService {
     return axios.get(`${API_URL}/sales-data?month=${month}`, { headers: authHeader() });
   }
 
+  getForaDeEstoque() {
+    return axios.get(`${API_URL}/fora-de-estoque`, { headers: authHeader() });
+  }
+
+  getAdequados() {
+    return axios.get(`${API_URL}/adequados`, { headers: authHeader() });
+  }
+
   }
 
 
