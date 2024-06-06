@@ -7,6 +7,10 @@ class LogService {
   getAll() {
     return axios.get(API_URL, { headers: authHeader() });
   }
+
+  getByDate(startDate, endDate) {
+    return axios.get(`${API_URL}/por-data?startDate=${startDate}&endDate=${endDate}`, { headers: authHeader() });
+  }
 }
 
 export default new LogService();
