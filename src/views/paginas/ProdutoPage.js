@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
@@ -13,13 +13,14 @@ const ProdutoPage = () => {
   const [currentProduto, setCurrentProduto] = useState({ id: null, nome: '', valor: '', quantidade: '', fornecedor: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [filterFornecedor, setFilterFornecedor] = useState('');
-  const [fornecedores, setFornecedores] = useState([]);
-  const { id } = useParams(); // Pegar o ID da URL
+  const [filterValor, setFilterValor] = useState('');
+  const [filterQuantidade, setFilterQuantidade] = useState('');
+  const { id } = useParams();
 
   useEffect(() => {
     retrieveProdutos();
     if (id) {
-      ProdutoService.get(id) // Adicionar método get no ProdutoService
+      ProdutoService.get(id)
         .then(response => {
           setCurrentProduto(response.data);
           setEditMode(true);
@@ -35,8 +36,6 @@ const ProdutoPage = () => {
     ProdutoService.getAll()
       .then(response => {
         setProdutos(response.data);
-        const uniqueFornecedores = [...new Set(response.data.map(produto => produto.fornecedor))];
-        setFornecedores(uniqueFornecedores);
       })
       .catch(e => {
         console.log(e);
@@ -64,12 +63,20 @@ const ProdutoPage = () => {
     setCurrentProduto({ ...currentProduto, [name]: value });
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
-  const handleFilterFornecedorChange = (e) => {
-    setFilterFornecedor(e.target.value);
+  const handleFilterFornecedorChange = (event) => {
+    setFilterFornecedor(event.target.value);
+  };
+
+  const handleFilterValorChange = (event) => {
+    setFilterValor(event.target.value);
+  };
+
+  const handleFilterQuantidadeChange = (event) => {
+    setFilterQuantidade(event.target.value);
   };
 
   const saveProduto = () => {
@@ -104,46 +111,63 @@ const ProdutoPage = () => {
       });
   };
 
-  const filteredProdutos = produtos.filter(produto =>
-    produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (filterFornecedor === '' || produto.fornecedor === filterFornecedor)
-  );
+  const filteredProdutos = produtos.filter(produto => {
+    return (
+      produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (filterFornecedor === '' || produto.fornecedor === filterFornecedor) &&
+      (filterValor === '' || produto.valor <= parseFloat(filterValor)) &&
+      (filterQuantidade === '' || produto.quantidade <= parseInt(filterQuantidade, 10))
+    );
+  });
 
   return (
     <PageContainer title="Produtos" description="Página de gestão de produtos">
       <DashboardCard title="Produtos">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-  <Box display="flex" gap={2}>
-    <FormControl sx={{ marginBottom: 2, minWidth: 200 }}>
-      <InputLabel id="filter-fornecedor-label">Fornecedor</InputLabel>
-      <Select
-        labelId="filter-fornecedor-label"
-        id="filter-fornecedor"
-        value={filterFornecedor}
-        label="Fornecedor"
-        onChange={handleFilterFornecedorChange}
-      >
-        <MenuItem value="">
-          <em>Todos</em>
-        </MenuItem>
-        {Array.from(new Set(produtos.map(p => p.fornecedor))).map((fornecedor, index) => (
-          <MenuItem key={index} value={fornecedor}>{fornecedor}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-    <TextField
-      label="Pesquisar Produto"
-      variant="outlined"
-      value={searchTerm}
-      onChange={handleSearchChange}
-      sx={{ marginBottom: 2 }}
-    />
-  </Box>
-  <Button variant="contained" color="primary" onClick={handleClickOpen}>
-    Criar Produto
-  </Button>
-</Box>
-
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Box display="flex" gap={2}>
+            <TextField
+              label="Pesquisar Produto"
+              variant="outlined"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              sx={{ marginBottom: 2 }}
+            />
+            <FormControl sx={{ marginBottom: 2, minWidth: 200 }}>
+              <InputLabel id="filter-fornecedor-label">Fornecedor</InputLabel>
+              <Select
+                labelId="filter-fornecedor-label"
+                id="filter-fornecedor"
+                value={filterFornecedor}
+                label="Fornecedor"
+                onChange={handleFilterFornecedorChange}
+              >
+                <MenuItem value="">
+                  <em>Todos</em>
+                </MenuItem>
+                {Array.from(new Set(produtos.map(p => p.fornecedor))).map((fornecedor, index) => (
+                  <MenuItem key={index} value={fornecedor}>{fornecedor}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              label="Valor Máximo"
+              variant="outlined"
+              value={filterValor}
+              onChange={handleFilterValorChange}
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              label="Quantidade Máxima"
+              variant="outlined"
+              value={filterQuantidade}
+              onChange={handleFilterQuantidadeChange}
+              sx={{ marginBottom: 2 }}
+            />
+          </Box>
+          <Button variant="contained" color="primary" onClick={handleClickOpen}>
+            Criar Produto
+          </Button>
+        </Box>
         <Box mt={2}>
           {filteredProdutos.map(produto => (
             <Box key={produto.id} display="flex" alignItems="center" justifyContent="space-between" p={2} borderBottom="1px solid #ccc">
