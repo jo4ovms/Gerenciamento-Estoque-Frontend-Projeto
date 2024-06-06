@@ -6,9 +6,10 @@ import PageContainer from 'src/components/container/PageContainer';
 import SalesOverview from './components/SalesOverview';
 import ProdutosAbaixoQuantidadeSegura from './components/ProdutosAbaixoQuantidadeSegura';
 import RecentTransactions from './components/RecentTransactions';
-import ProductPerformance from './components/ProductPerformance';
+import ItensMaisVendidos from './components/ItensMaisVendidos';
 import Blog from './components/Blog';
 import StockOverview from './components/StockOverview';
+
 
 const Dashboard = () => {
   return (
@@ -32,10 +33,7 @@ const Dashboard = () => {
             <RecentTransactions />
           </Grid>
           <Grid item xs={12} lg={8}>
-            <ProductPerformance />
-          </Grid>
-          <Grid item xs={12}>
-            <Blog />
+            <ItensMaisVendidos sx={{ height: '480px', width: '100%' }} />
           </Grid>
         </Grid>
       </Box>

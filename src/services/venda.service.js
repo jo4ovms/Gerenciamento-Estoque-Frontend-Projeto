@@ -11,6 +11,11 @@ class VendaService {
   registrarVenda(data) {
     return axios.post(API_URL, data, { headers: authHeader() });
   }
+
+  getItensMaisVendidos() {
+    return axios.get(`${API_URL}/itens-mais-vendidos`, { headers: authHeader() });
+  }
+
 }
 
 export default new VendaService();

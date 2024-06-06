@@ -23,6 +23,7 @@ const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
 const RelatorioPage = Loadable(lazy(() => import('../views/paginas/RelatorioPage')));
+const ProdutosMaisVendidosPage = Loadable(lazy(() => import('../views/paginas/ProdutosMaisVendidosPage')));
 
 const Router = [
   {
@@ -39,6 +40,7 @@ const Router = [
           { path: '/produtos', exact: true, element: <ProdutoPage /> },
           { path: '/produtos/abaixo-da-quantidade-segura', exact: true, element: <ProdutosAbaixoQuantidadeSeguraPage /> },
           { path: '/produtos/fora-de-estoque', exact: true, element: <ProdutosForaDeEstoque /> },
+          { path: '/produtos/mais-vendidos', exact: true, element: <ProdutosMaisVendidosPage /> },
           { path: '/produtos/adequados', exact: true, element: <ProdutosAdequados /> },
           { path: '/registrar-venda', exact: true, element: <RegistrarVenda /> },
           { path: '/produtos/:id/edit', exact: true, element: <ProdutoPage /> }, // Adicione esta linha
