@@ -19,6 +19,8 @@ const PageWrapper = styled('div')(() => ({
   flexDirection: 'column',
   zIndex: 1,
   backgroundColor: 'transparent',
+  marginLeft: '-80px',
+  marginRight: '0px',
 }));
 
 const FullLayout = () => {

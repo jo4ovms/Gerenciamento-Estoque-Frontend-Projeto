@@ -11,11 +11,11 @@ const DashboardCard = ({
   headtitle,
   headsubtitle,
   middlecontent,
+  sx, // Adicionar a prop sx
 }) => {
-
   return (
     <Card
-      sx={{ padding: 0 }}
+      sx={{ padding: 0, ...sx }} // Aplicar os estilos de sx aqui
       elevation={9}
       variant={undefined}
     >

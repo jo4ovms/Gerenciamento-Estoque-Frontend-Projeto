@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Typography, Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import PageContainer from 'src/components/container/PageContainer';
@@ -10,10 +11,22 @@ const ProdutoPage = () => {
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentProduto, setCurrentProduto] = useState({ id: null, nome: '', valor: '', quantidade: '', fornecedor: '' });
+  const { id } = useParams(); // Pegar o ID da URL
 
   useEffect(() => {
     retrieveProdutos();
-  }, []);
+    if (id) {
+      ProdutoService.get(id) // Adicionar método get no ProdutoService
+        .then(response => {
+          setCurrentProduto(response.data);
+          setEditMode(true);
+          setOpen(true);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+  }, [id]);
 
   const retrieveProdutos = () => {
     ProdutoService.getAll()

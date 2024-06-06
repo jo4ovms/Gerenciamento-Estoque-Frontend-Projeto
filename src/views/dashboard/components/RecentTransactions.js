@@ -46,7 +46,10 @@ const RecentTransactions = () => {
   };
 
   return (
-    <DashboardCard title="Recent Activities">
+    <DashboardCard 
+      title="Recent Activities"
+      sx={{ height: '480px', width: '100%', maxWidth: '600px', overflowY: 'auto' }} // Ajuste a largura e altura aqui
+    >
       <Timeline
         className="theme-timeline"
         sx={{

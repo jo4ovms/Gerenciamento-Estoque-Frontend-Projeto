@@ -12,6 +12,7 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')));
 const Fornecedores = Loadable(lazy(() => import('../views/paginas/Fornecedores')));
 const ProdutoPage = Loadable(lazy(() => import('../views/paginas/ProdutoPage')));
+const ProdutosAbaixoQuantidadeSeguraPage = Loadable(lazy(() => import('../views/paginas/ProdutosAbaixoQuantidadeSeguraPage')));
 const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
 const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
 const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')));
@@ -33,6 +34,8 @@ const Router = [
           { path: '/dashboard', exact: true, element: <Dashboard /> },
           { path: '/Fornecedor', exact: true, element: <Fornecedores /> },
           { path: '/produtos', exact: true, element: <ProdutoPage /> },
+          { path: '/produtos/abaixo-da-quantidade-segura', exact: true, element: <ProdutosAbaixoQuantidadeSeguraPage /> },
+          { path: '/produtos/:id/edit', exact: true, element: <ProdutoPage /> }, // Adicione esta linha
           {
             path: '/relatorios',
             exact: true,

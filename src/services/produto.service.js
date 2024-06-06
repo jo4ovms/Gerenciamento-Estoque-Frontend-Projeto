@@ -22,6 +22,15 @@ class ProdutoService {
   getAbaixoDaQuantidadeSegura() {
     return axios.get(API_URL + '/abaixo-da-quantidade-segura', { headers: authHeader() });
   }
+
+  get(id) {
+    return axios.get(`${API_URL}/${id}`, { headers: authHeader() });
+  }
+
+  getSalesData(month) {
+    return axios.get(`${API_URL}/sales-data?month=${month}`, { headers: authHeader() });
+  }
+
   }
 
 
