@@ -7,7 +7,6 @@ import SalesOverview from './components/SalesOverview';
 import ProdutosAbaixoQuantidadeSegura from './components/ProdutosAbaixoQuantidadeSegura';
 import RecentTransactions from './components/RecentTransactions';
 import ItensMaisVendidos from './components/ItensMaisVendidos';
-import Blog from './components/Blog';
 import StockOverview from './components/StockOverview';
 
 

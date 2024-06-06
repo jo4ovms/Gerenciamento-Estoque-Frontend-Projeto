@@ -82,7 +82,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Registrar Venda',
     icon: IconAperture,
-    href: '/registrar-venda',
+    href: '/vendas',
   },
 ];
 

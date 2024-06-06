@@ -43,7 +43,7 @@ const ProdutosAbaixoQuantidadeSegura = () => {
           <IconAlertTriangle width={24} />
         </Fab>
       }
-      sx={{ height: '270px', width: '125%', maxWidth: '600px' }} // Ajuste a largura e altura aqui
+      sx={{ height: '270px', width: '125%', maxWidth: '600px' }} // Ajuste a largura e altura do DashboardCard aqui
     >
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
         <Typography variant="h4" fontWeight="700" mb={1}>
@@ -57,7 +57,9 @@ const ProdutosAbaixoQuantidadeSegura = () => {
           ) : (
             produtos.map((produto) => (
               <Grid item xs={12} key={produto.id} onClick={() => handleProductClick(produto.id)} style={{ cursor: 'pointer' }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" padding="8px" border={`1px solid ${theme.palette.divider}`} borderRadius="8px" mb={1}>
+                <Box display="flex" justifyContent="space-between" alignItems="center" padding="18px" border={`1px solid ${theme.palette.divider}`} borderRadius="8px" mb={0}
+                     sx={{ height: '50px', width: '100%' }} // Ajuste o tamanho do retângulo aqui
+                >
                   <Box display="flex" alignItems="center">
                     <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27, mr: 2 }}>
                       <IconAlertTriangle width={20} color={primary} />

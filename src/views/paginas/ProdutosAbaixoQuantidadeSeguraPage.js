@@ -31,7 +31,7 @@ const ProdutosAbaixoQuantidadeSeguraPage = () => {
   return (
     <PageContainer title="Produtos Abaixo da Quantidade Segura" description="Página de produtos abaixo da quantidade segura">
       <DashboardCard title="Produtos Acabando!">
-        <Grid container spacing={2}>
+        <Grid container spacing={-5}>
           {produtos.length === 0 ? (
             <Typography variant="body2" color="textSecondary">
               Nenhum produto abaixo da quantidade segura.

@@ -15,10 +15,7 @@ const ProdutoPage = Loadable(lazy(() => import('../views/paginas/ProdutoPage')))
 const ProdutosAbaixoQuantidadeSeguraPage = Loadable(lazy(() => import('../views/paginas/ProdutosAbaixoQuantidadeSeguraPage')));
 const ProdutosForaDeEstoque = Loadable(lazy(() => import('../views/paginas/ProdutosForaDeEstoque')));
 const ProdutosAdequados = Loadable(lazy(() => import('../views/paginas/ProdutosAdequados')));
-const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
-const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
-const RegistrarVenda = Loadable(lazy(() => import('../views/paginas/RegistrarVenda')));
-const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')));
+const VendaPage = Loadable(lazy(() => import('../views/paginas/VendaPage')));
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
@@ -42,7 +39,7 @@ const Router = [
           { path: '/produtos/fora-de-estoque', exact: true, element: <ProdutosForaDeEstoque /> },
           { path: '/produtos/mais-vendidos', exact: true, element: <ProdutosMaisVendidosPage /> },
           { path: '/produtos/adequados', exact: true, element: <ProdutosAdequados /> },
-          { path: '/registrar-venda', exact: true, element: <RegistrarVenda /> },
+          { path: '/vendas', exact: true, element: <VendaPage /> },
           { path: '/produtos/:id/edit', exact: true, element: <ProdutoPage /> }, // Adicione esta linha
           {
             path: '/relatorios',
