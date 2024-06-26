@@ -1,32 +1,38 @@
 /* src/styles/RecentTransactions.css */
 .theme-timeline {
-    padding-left: 0;
-    margin-bottom: -40px;
-  }
-  
-  .theme-timeline .MuiTimelineConnector-root {
-    width: 1px;
-    background-color: #efefef;
-  }
-  
-  .theme-timeline .MuiTimelineOppositeContent-root {
-    flex: 0.1;
-    padding-left: 0;
-  }
-  
-  .theme-timeline .MuiTimelineContent-root {
-    margin-top: -10px;
-    margin-bottom: -10px;
-    padding-left: 12px;
-  }
-  
-  .theme-timeline .MuiTimelineItem-root {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  
-  .theme-timeline .MuiTimelineItem-root::before {
-    display: none;
-  }
-  
+  padding-left: 0;
+  margin-bottom: -40px;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.theme-timeline::-webkit-scrollbar {
+  width: 0;  /* Safari and Chrome */
+  height: 0;  /* Safari and Chrome */
+}
+
+.theme-timeline .MuiTimelineConnector-root {
+  width: 1px;
+  background-color: #efefef;
+}
+
+.theme-timeline .MuiTimelineOppositeContent-root {
+  flex: 0.1;
+  padding-left: 0;
+}
+
+.theme-timeline .MuiTimelineContent-root {
+  margin-top: -10px;
+  margin-bottom: -10px;
+  padding-left: 12px;
+}
+
+.theme-timeline .MuiTimelineItem-root {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.theme-timeline .MuiTimelineItem-root::before {
+  display: none;
+}

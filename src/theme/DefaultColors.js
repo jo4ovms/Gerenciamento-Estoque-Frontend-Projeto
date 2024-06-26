@@ -1,12 +1,12 @@
-import { createTheme } from "@mui/material/styles";
-import typography from "./Typography";
-import { shadows } from "./Shadows";
+import { createTheme } from '@mui/material/styles';
+import typography from './Typography';
+import { shadows } from './Shadows';
 
 const baselightTheme = createTheme({
   direction: 'ltr',
   palette: {
     primary: {
-      main: '#5D87FF',
+      main: '#5D87FF', //#5D87FF',
       light: '#ECF2FF',
       dark: '#4570EA',
     },
@@ -51,7 +51,6 @@ const baselightTheme = createTheme({
       400: '#7C8FAC',
       500: '#5A6A85',
       600: '#2A3547',
-
     },
     text: {
       primary: '#2A3547',
@@ -63,11 +62,12 @@ const baselightTheme = createTheme({
       hover: '#f6f9fc',
     },
     divider: '#e5eaef',
+    background: {
+      default: '#f0f2f5', 
+    },
   },
   typography,
-  shadows
-},
-  
-);
+  shadows,
+});
 
 export { baselightTheme };

@@ -21,11 +21,13 @@ const Register = Loadable(lazy(() => import('../views/authentication/Register'))
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
 const RelatorioPage = Loadable(lazy(() => import('../views/paginas/RelatorioPage')));
 const ProdutosMaisVendidosPage = Loadable(lazy(() => import('../views/paginas/ProdutosMaisVendidosPage')));
+const AboutUs = Loadable(lazy(() => import('../views/paginas/AboutUs')));
+const ContactUs = Loadable(lazy(() => import('../views/paginas/ContactUs')));
 
 const Router = [
   {
     path: '/',
-    element: <PrivateRoute />,
+    element: <PrivateRoute />, // Verifica autenticação para todas as rotas filhas
     children: [
       {
         path: '/',
@@ -40,13 +42,10 @@ const Router = [
           { path: '/produtos/mais-vendidos', exact: true, element: <ProdutosMaisVendidosPage /> },
           { path: '/produtos/adequados', exact: true, element: <ProdutosAdequados /> },
           { path: '/vendas', exact: true, element: <VendaPage /> },
-          { path: '/produtos/:id/edit', exact: true, element: <ProdutoPage /> }, // Adicione esta linha
-          {
-            path: '/relatorios',
-            exact: true,
-            element: <RelatorioPage />,
-          },
-          
+          { path: '/about-us', exact: true, element: <AboutUs /> },
+          { path: '/contact-us', exact: true, element: <ContactUs /> },
+          { path: '/produtos/:id/edit', exact: true, element: <ProdutoPage /> },
+          { path: '/relatorios', exact: true, element: <RelatorioPage /> },
           { path: '*', element: <Navigate to="/auth/404" /> },
         ],
       },
@@ -63,6 +62,8 @@ const Router = [
     ],
   },
   { path: '/logout', element: <Logout /> },
+  // Redirecionar para a página de login caso a rota não seja encontrada
+  { path: '*', element: <Navigate to="/auth/login" /> },
 ];
 
 export default Router;

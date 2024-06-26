@@ -43,22 +43,24 @@ const ProdutosAbaixoQuantidadeSegura = () => {
           <IconAlertTriangle width={24} />
         </Fab>
       }
-      sx={{ height: '270px', width: '125%', maxWidth: '600px' }} // Ajuste a largura e altura do DashboardCard aqui
+      sx={{ height: '270px', width: '125%', maxWidth: '600px' }}
     >
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
         <Typography variant="h4" fontWeight="700" mb={1}>
           {produtos.length} Produtos
         </Typography>
-        <Grid container spacing={2} style={{ overflowY: 'auto', maxHeight: '300px' }}>
+        <Grid container spacing={2} style={{ overflowY: 'auto', maxHeight: '300px', width: '100%' }}>
           {produtos.length === 0 ? (
-            <Typography variant="body2" color="textSecondary">
-              Nenhum produto abaixo da quantidade segura.
-            </Typography>
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+              <Typography variant="body2" color="textSecondary" sx={{ ml: 10, mt: 2, textAlign: 'center' }}>
+                Nenhum produto abaixo da quantidade segura.
+              </Typography>
+            </Box>
           ) : (
-            produtos.map((produto) => (
+            produtos.slice(0, 2).map((produto) => ( // Limitar a 2 produtos
               <Grid item xs={12} key={produto.id} onClick={() => handleProductClick(produto.id)} style={{ cursor: 'pointer' }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" padding="18px" border={`1px solid ${theme.palette.divider}`} borderRadius="8px" mb={0}
-                     sx={{ height: '50px', width: '100%' }} // Ajuste o tamanho do retângulo aqui
+                     sx={{ height: '50px', width: '100%' }} 
                 >
                   <Box display="flex" alignItems="center">
                     <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27, mr: 2 }}>

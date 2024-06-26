@@ -13,7 +13,7 @@ const Error = () => (
     <Container maxWidth="md">
       <img src={ErrorImg} alt="404" style={{ width: '100%', maxWidth: '500px' }} />
       <Typography align="center" variant="h1" mb={4}>
-        Opps!!!
+        Ops!!!
       </Typography>
       <Typography align="center" variant="h4" mb={4}>
         Essa página que você tentou entrar não existe!

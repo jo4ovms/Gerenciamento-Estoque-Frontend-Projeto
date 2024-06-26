@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  Typography, Box, Table, TableBody, TableCell, TableHead, TableRow, Fab
+  Typography,
+  Fab,
+  Box,
+  TableCell,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
 } from '@mui/material';
 import { IconArrowRight } from '@tabler/icons';
-import { useNavigate } from 'react-router-dom';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import VendaService from '../../../services/venda.service';
 
@@ -17,17 +24,11 @@ const ItensMaisVendidos = ({ sx }) => {
 
   const fetchItensMaisVendidos = () => {
     VendaService.getItensMaisVendidos()
-      .then(response => {
-        setItensMaisVendidos(response.data.slice(0, 5)); // Limitar a 5 produtos
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      .then((response) => setItensMaisVendidos(response.data.slice(0, 8)))
+      .catch(console.log);
   };
 
-  const handleViewAllClick = () => {
-    navigate('/produtos/mais-vendidos');
-  };
+  const handleViewAllClick = () => navigate('/produtos/mais-vendidos');
 
   return (
     <DashboardCard
@@ -37,50 +38,43 @@ const ItensMaisVendidos = ({ sx }) => {
           <IconArrowRight width={24} />
         </Fab>
       }
-      sx={sx}
+      sx={{ height: '600px', width: '100%', maxWidth: '800px', ...sx }}
     >
       <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
-        <Table
-          aria-label="tabela de itens mais vendidos"
-          sx={{
-            whiteSpace: "nowrap",
-            mt: 2
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Produto
-                </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Quantidade Vendida
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {itensMaisVendidos.map((item, index) => (
-              <TableRow key={index}>
+        {itensMaisVendidos.length > 0 ? (
+          <Table aria-label="tabela de itens mais vendidos" sx={{ whiteSpace: 'nowrap', mt: 0 }}>
+            <TableHead>
+              <TableRow>
                 <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {item.produto}
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    Produto
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography variant="h6">{item.quantidade}</Typography>
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    Quantidade Vendida
+                  </Typography>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {itensMaisVendidos.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Typography sx={{ fontSize: '16px', fontWeight: '500' }}>
+                      {item.produto}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="h6">{item.quantidade}</Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>Nenhum produto vendido.</Typography>
+        )}
       </Box>
     </DashboardCard>
   );

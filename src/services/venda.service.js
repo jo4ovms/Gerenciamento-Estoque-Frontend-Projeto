@@ -24,4 +24,5 @@ class VendaService {
 
 }
 
-export default new VendaService();
+const vendaServiceInstance = new VendaService();
+export default vendaServiceInstance;

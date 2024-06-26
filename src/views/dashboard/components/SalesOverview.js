@@ -16,11 +16,11 @@ const SalesOverview = () => {
 
   const fetchSalesData = (month) => {
     VendaService.getSalesData(month)
-      .then(response => {
+      .then((response) => {
         const formattedData = formatSalesData(response.data);
         setSalesData(formattedData);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -29,7 +29,7 @@ const SalesOverview = () => {
     const daysInMonth = new Date(new Date().getFullYear(), month, 0).getDate();
     const salesPerDay = Array.from({ length: daysInMonth }, (_, i) => ({ day: i + 1, sales: 0 }));
 
-    data.forEach(sale => {
+    data.forEach((sale) => {
       const saleDate = new Date(sale.dataVenda);
       salesPerDay[saleDate.getDate() - 1].sales += sale.quantidade;
     });
@@ -61,22 +61,22 @@ const SalesOverview = () => {
         borderRadiusApplication: 'end',
         borderRadiusWhenStacked: 'all',
         dataLabels: {
-          position: 'top', // Rótulos de dados no topo das barras
+          position: 'top',
         },
       },
     },
     stroke: {
       show: true,
       width: 2,
-      colors: ["transparent"],
+      colors: ['transparent'],
     },
     dataLabels: {
       enabled: true,
       formatter: (val) => val,
-      offsetY: -20, // Ajustar a posição dos rótulos para ficar acima das barras
+      offsetY: -20,
       style: {
         fontSize: '12px',
-        colors: ["#304758"]
+        colors: ['#304758'],
       },
     },
     legend: {
@@ -98,7 +98,7 @@ const SalesOverview = () => {
       },
     },
     xaxis: {
-      categories: salesData.map(data => data.day),
+      categories: salesData.map((data) => data.day),
       axisBorder: {
         show: false,
       },
@@ -112,18 +112,18 @@ const SalesOverview = () => {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
       fillSeriesColor: false,
       x: {
-        formatter: (val) => `Dia ${val}`
+        formatter: (val) => `Dia ${val}`,
       },
       y: {
-        formatter: (val) => `${val} vendas`
-      }
+        formatter: (val) => `${val} vendas`,
+      },
     },
   };
 
   const seriescolumnchart = [
     {
       name: 'Vendas',
-      data: salesData.map(data => data.sales),
+      data: salesData.map((data) => data.sales),
     },
   ];
 

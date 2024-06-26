@@ -12,18 +12,19 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: '60px',
 }));
 
-const darkTheme = createTheme({ palette: { mode: 'dark' } });
-const lightTheme = createTheme({ palette: { mode: 'light' } });
+const themes = {
+  dark: createTheme({ palette: { mode: 'dark' } }),
+  light: createTheme({ palette: { mode: 'light' } }),
+};
 
 const Shadow = () => {
   return (
     <PageContainer title="Shadow" description="this is Shadow">
-
       <DashboardCard title="Shadow">
         <Grid container spacing={2}>
-          {[lightTheme, darkTheme].map((theme, index) => (
+          {Object.keys(themes).map((key, index) => (
             <Grid item xs={6} key={index}>
-              <ThemeProvider theme={theme}>
+              <ThemeProvider theme={themes[key]}>
                 <Box
                   sx={{
                     p: 2,

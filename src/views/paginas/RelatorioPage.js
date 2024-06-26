@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Button, Collapse, TextField, Grid, Snackbar } from '@mui/material';
+import { Box, Button, TextField, Grid, Snackbar, SnackbarContent, Typography, Collapse } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -23,13 +23,9 @@ const RelatorioPage = () => {
   const retrieveLogs = () => {
     LogService.getAll()
       .then(response => {
-        const sortedLogs = response.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        setLogs(sortedLogs);
+        setLogs(response.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
       })
-      .catch(e => {
-        console.log(e);
-        setErrorMessage('Erro ao recuperar logs.');
-      });
+      .catch(() => setErrorMessage('Erro ao recuperar logs.'));
   };
 
   const handleDateChange = () => {
@@ -43,14 +39,10 @@ const RelatorioPage = () => {
 
     LogService.getByDate(start, end)
       .then(response => {
-        const sortedLogs = response.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        setLogs(sortedLogs);
+        setLogs(response.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
         setSuccessMessage('Logs filtrados com sucesso.');
       })
-      .catch(e => {
-        console.log(e);
-        setErrorMessage('Erro ao filtrar logs.');
-      });
+      .catch(() => setErrorMessage('Erro ao filtrar logs.'));
   };
 
   const handleToggleExpand = (logId) => {
@@ -65,13 +57,13 @@ const RelatorioPage = () => {
   return (
     <PageContainer title="Relatórios" description="Página de relatórios">
       <DashboardCard title="Relatórios de Atividades">
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={ptBR}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <DatePicker
                 label="Data Início"
                 value={startDate}
-                onChange={(newValue) => setStartDate(newValue)}
+                onChange={setStartDate}
                 renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </Grid>
@@ -79,7 +71,7 @@ const RelatorioPage = () => {
               <DatePicker
                 label="Data Fim"
                 value={endDate}
-                onChange={(newValue) => setEndDate(newValue)}
+                onChange={setEndDate}
                 renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </Grid>
@@ -90,36 +82,42 @@ const RelatorioPage = () => {
             </Grid>
           </Grid>
         </LocalizationProvider>
-        {logs.map(log => (
-          <Box key={log.id} display="flex" flexDirection="column" p={2} borderBottom="1px solid #ccc">
-            <Box display="flex" alignItems="center" justifyContent="space-between">
-              <Box>
-                <Typography variant="h6">{log.entity}</Typography>
-                <Typography variant="body2">{log.action}</Typography>
-                <Typography variant="body2">{new Date(log.timestamp).toLocaleString()}</Typography>
+        <Box mt={2}>
+          {logs.length > 0 ? (
+            logs.map(log => (
+              <Box key={log.id} display="flex" flexDirection="column" p={2} borderBottom="1px solid #ccc">
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Box>
+                    <Typography variant="h6">{log.entity}</Typography>
+                    <Typography variant="body2">{log.action}</Typography>
+                    <Typography variant="body2">{new Date(log.timestamp).toLocaleString()}</Typography>
+                  </Box>
+                  <Button variant="outlined" color="primary" onClick={() => handleToggleExpand(log.id)}>
+                    Ver Detalhes
+                  </Button>
+                </Box>
+                <Collapse in={expandedLogId === log.id}>
+                  <Box mt={2}>
+                    {log.details.split(';').map((detail, index) => (
+                      <Typography key={index} variant="body2">
+                        {detail.trim()}
+                      </Typography>
+                    ))}
+                  </Box>
+                </Collapse>
               </Box>
-              <Box>
-                <Button variant="outlined" color="primary" onClick={() => handleToggleExpand(log.id)}>
-                  Ver Detalhes
-                </Button>
-              </Box>
-            </Box>
-            <Collapse in={expandedLogId === log.id}>
-              <Box mt={2}>
-                <Typography variant="body2">{log.details}</Typography>
-              </Box>
-            </Collapse>
-          </Box>
-        ))}
+            ))
+          ) : (
+            <Typography variant="h7">Nenhum log registrado ainda.</Typography>
+          )}
+        </Box>
         <Snackbar
           open={Boolean(errorMessage)}
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
-          <Box>
-            <Typography color="error">{errorMessage}</Typography>
-          </Box>
+          <SnackbarContent message={errorMessage} style={{ backgroundColor: 'red' }} />
         </Snackbar>
         <Snackbar
           open={Boolean(successMessage)}
@@ -127,9 +125,7 @@ const RelatorioPage = () => {
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
-          <Box>
-            <Typography color="success">{successMessage}</Typography>
-          </Box>
+          <SnackbarContent message={successMessage} style={{ backgroundColor: 'green' }} />
         </Snackbar>
       </DashboardCard>
     </PageContainer>

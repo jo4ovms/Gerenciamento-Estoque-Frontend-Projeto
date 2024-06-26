@@ -16,12 +16,8 @@ const ProdutosAbaixoQuantidadeSeguraPage = () => {
 
   const retrieveProdutosAbaixoDaQuantidadeSegura = () => {
     ProdutoService.getAbaixoDaQuantidadeSegura()
-      .then(response => {
-        setProdutos(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      .then(response => setProdutos(response.data))
+      .catch(console.log);
   };
 
   const handleProductClick = (produtoId) => {

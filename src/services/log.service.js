@@ -12,5 +12,5 @@ class LogService {
     return axiosInstance.get(`${API_URL}/por-data?startDate=${startDate}&endDate=${endDate}`, { headers: authHeader() });
   }
 }
-
-export default new LogService();
+const LogServiceInstance = new LogService();
+export default LogServiceInstance;

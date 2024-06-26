@@ -19,6 +19,25 @@ class FornecedorService {
   delete(id) {
     return axiosInstance.delete(`${API_URL}/${id}`, { headers: authHeader() });
   }
-}
 
-export default new FornecedorService();
+  exportFornecedoresToExcel() {
+    return axiosInstance.get('http://localhost:8080/api/excel/fornecedores/export', {
+      responseType: 'blob',
+      headers: authHeader(),
+    });
+  }
+
+  importFornecedoresFromExcel(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return axiosInstance.post('http://localhost:8080/api/excel/fornecedores/import', formData, {
+      headers: {
+        ...authHeader(),
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+}
+const FornecedorServiceInstance = new FornecedorService();
+export default FornecedorServiceInstance;

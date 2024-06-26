@@ -1,4 +1,3 @@
-import axios from 'axios';
 import authHeader from './auth-header';
 import axiosInstance from './axiosInstance';
 
@@ -40,7 +39,25 @@ class ProdutoService {
     return axiosInstance.get(`${API_URL}/adequados`, { headers: authHeader() });
   }
 
+  exportProdutosToExcel() {
+    return axiosInstance.get('http://localhost:8080/api/excel/produtos/export', {
+      responseType: 'blob',
+      headers: authHeader(),
+    });
   }
 
+  importProdutosFromExcel(file) {
+    const formData = new FormData();
+    formData.append('file', file);
 
-export default new ProdutoService();
+    return axiosInstance.post('http://localhost:8080/api/excel/produtos/import', formData, {
+      headers: {
+        ...authHeader(),
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+}
+
+const ProdutoServiceInstance = new ProdutoService();
+export default ProdutoServiceInstance;

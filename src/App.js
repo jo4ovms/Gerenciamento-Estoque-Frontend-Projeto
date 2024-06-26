@@ -11,7 +11,6 @@ function App() {
   const [showReloginMessage, setShowReloginMessage] = useState(false);
 
   useEffect(() => {
-    // Função para verificar se o token expirou
     const checkTokenExpiration = () => {
       const user = AuthService.getCurrentUser();
       if (user && user.accessToken) {
@@ -24,7 +23,6 @@ function App() {
       }
     };
 
-    // Verificar a expiração do token a cada minuto
     const interval = setInterval(checkTokenExpiration, 60000);
     return () => clearInterval(interval);
   }, []);

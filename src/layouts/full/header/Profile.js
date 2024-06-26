@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -11,9 +11,9 @@ import {
   ListItemText
 } from '@mui/material';
 
-import { IconListCheck, IconMail, IconUser } from '@tabler/icons';
+import { IconUser } from '@tabler/icons';
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
-import AuthService from '../../../services/auth.service'; // Certifique-se de ajustar o caminho conforme necessário
+import AuthService from '../../../services/auth.service';
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -37,7 +37,7 @@ const Profile = () => {
     <Box>
       <IconButton
         size="large"
-        aria-label="show 11 new notifications"
+        aria-label="msgs"
         color="inherit"
         aria-controls="msgs-menu"
         aria-haspopup="true"
@@ -57,9 +57,7 @@ const Profile = () => {
           }}
         />
       </IconButton>
-      {/* ------------------------------------------- */}
-      {/* Message Dropdown */}
-      {/* ------------------------------------------- */}
+      
       <Menu
         id="msgs-menu"
         anchorEl={anchorEl2}
@@ -78,23 +76,11 @@ const Profile = () => {
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>
-          <ListItemText>My Profile</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <IconMail width={20} />
-          </ListItemIcon>
-          <ListItemText>My Account</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <IconListCheck width={20} />
-          </ListItemIcon>
-          <ListItemText>My Tasks</ListItemText>
+          <ListItemText>Perfil</ListItemText>
         </MenuItem>
         <Box mt={1} py={1} px={2}>
           <Button variant="outlined" color="primary" onClick={handleLogout} fullWidth>
-            Logout
+            Desconectar
           </Button>
         </Box>
       </Menu>

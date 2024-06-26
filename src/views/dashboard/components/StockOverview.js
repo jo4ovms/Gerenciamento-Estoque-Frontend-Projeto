@@ -18,16 +18,18 @@ const StockOverview = () => {
 
   const fetchStockData = () => {
     ProdutoService.getAll()
-      .then(response => {
+      .then((response) => {
         const produtos = response.data;
         const total = produtos.length;
-        const lowStock = produtos.filter(produto => produto.quantidade > 0 && produto.quantidade < 5).length;
-        const outOfStock = produtos.filter(produto => produto.quantidade === 0).length;
+        const lowStock = produtos.filter(
+          (produto) => produto.quantidade > 0 && produto.quantidade < 5,
+        ).length;
+        const outOfStock = produtos.filter((produto) => produto.quantidade === 0).length;
         setTotalItems(total);
         setLowStockItems(lowStock);
         setOutOfStockItems(outOfStock);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -45,11 +47,16 @@ const StockOverview = () => {
     <DashboardCard
       title="Visão Geral do Estoque"
       action={
-        <Fab color="secondary" size="medium" sx={{ color: '#ffffff' }} onClick={() => handleNavigate('/produtos')}>
+        <Fab
+          color="secondary"
+          size="medium"
+          sx={{ color: '#ffffff' }}
+          onClick={() => handleNavigate('/produtos')}
+        >
           <IconBox width={24} />
         </Fab>
       }
-      sx={{ height: '240px', width: '103%', maxWidth: '600px' }}
+      sx={{ height: '240px', width: '125%', maxWidth: '600px' }}
     >
       <>
         <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
@@ -61,7 +68,12 @@ const StockOverview = () => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
-          <Box display="flex" alignItems="center" onClick={() => handleNavigate('/produtos/abaixo-da-quantidade-segura')} style={{ cursor: 'pointer' }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            onClick={() => handleNavigate('/produtos/abaixo-da-quantidade-segura')}
+            style={{ cursor: 'pointer' }}
+          >
             <Avatar sx={{ bgcolor: warninglight, width: 40, height: 40, mr: 2 }}>
               <IconAlertTriangle width={24} color={theme.palette.warning.main} />
             </Avatar>
@@ -72,7 +84,12 @@ const StockOverview = () => {
               </Typography>
             </Box>
           </Box>
-          <Box display="flex" alignItems="center" onClick={() => handleNavigate('/produtos/fora-de-estoque')} style={{ cursor: 'pointer' }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            onClick={() => handleNavigate('/produtos/fora-de-estoque')}
+            style={{ cursor: 'pointer' }}
+          >
             <Avatar sx={{ bgcolor: errorlight, width: 40, height: 40, mr: 2 }}>
               <IconAlertTriangle width={24} color={theme.palette.error.main} />
             </Avatar>
@@ -83,7 +100,12 @@ const StockOverview = () => {
               </Typography>
             </Box>
           </Box>
-          <Box display="flex" alignItems="center" onClick={() => handleNavigate('/produtos/adequados')} style={{ cursor: 'pointer' }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            onClick={() => handleNavigate('/produtos/adequados')}
+            style={{ cursor: 'pointer' }}
+          >
             <Avatar sx={{ bgcolor: successlight, width: 40, height: 40, mr: 2 }}>
               <IconCheck width={24} color={theme.palette.success.main} />
             </Avatar>

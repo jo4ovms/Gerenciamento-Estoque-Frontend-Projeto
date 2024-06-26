@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Box, Grid } from '@mui/material';
+import DashboardCard from '../../components/shared/DashboardCard';
 import ProdutoService from '../../services/produto.service';
 
 const ProdutosForaDeEstoque = () => {
@@ -11,20 +12,13 @@ const ProdutosForaDeEstoque = () => {
 
   const retrieveProdutosForaDeEstoque = () => {
     ProdutoService.getForaDeEstoque()
-      .then(response => {
-        setProdutos(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      .then(response => setProdutos(response.data))
+      .catch(console.log);
   };
 
   return (
-    <Box>
-      <Typography variant="h4" fontWeight="700" mb={3}>
-        Produtos Fora de Estoque
-      </Typography>
-      <Grid container spacing={2}>
+    <DashboardCard title="Produtos Fora de Estoque">
+      <Grid container spacing={-5}>
         {produtos.length === 0 ? (
           <Typography variant="body2" color="textSecondary">
             Nenhum produto fora de estoque.
@@ -40,7 +34,7 @@ const ProdutosForaDeEstoque = () => {
           ))
         )}
       </Grid>
-    </Box>
+    </DashboardCard>
   );
 };
 

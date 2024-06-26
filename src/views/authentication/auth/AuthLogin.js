@@ -34,6 +34,8 @@ const AuthLogin = () => {
     );
   };
 
+  
+
   return (
     <Box>
       <Typography fontWeight="700" variant="h2" mb={1}>
@@ -52,9 +54,6 @@ const AuthLogin = () => {
           <FormGroup>
             <FormControlLabel control={<Checkbox defaultChecked />} label="Lembrar desse dispositivo" />
           </FormGroup>
-          <Typography component={Link} to="/" fontWeight="500" sx={{ textDecoration: 'none', color: 'primary.main' }}>
-            Esqueceu sua senha?
-          </Typography>
         </Stack>
       </Stack>
       <Box>

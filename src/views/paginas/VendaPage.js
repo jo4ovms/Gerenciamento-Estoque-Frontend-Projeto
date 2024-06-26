@@ -9,19 +9,15 @@ const VendaPage = () => {
   const [selectedProduto, setSelectedProduto] = useState(null);
   const [quantidade, setQuantidade] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false); // Boolean to control Snackbar visibility
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     ProdutoService.getAll()
-      .then(response => {
-        setProdutos(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      .then(response => setProdutos(response.data))
+      .catch(console.log);
   }, []);
 
-  const handleProdutoChange = (event, value) => {
+  const handleProdutoChange = (_, value) => {
     setSelectedProduto(value);
     setError('');
     setSuccess(false);
@@ -46,23 +42,15 @@ const VendaPage = () => {
 
     VendaService.registrarVenda({ produtoId: selectedProduto.id, quantidade })
       .then(() => {
-        // Atualizar quantidade disponível do produto selecionado
-        const updatedProduto = { ...selectedProduto, quantidade: selectedProduto.quantidade - quantidade };
-        setSelectedProduto(updatedProduto);
-
+        setSelectedProduto(prev => ({ ...prev, quantidade: prev.quantidade - quantidade }));
         setSuccess(true);
         setError('');
-        setQuantidade(''); // Limpar a quantidade após o registro da venda
+        setQuantidade('');
       })
-      .catch(e => {
-        console.log(e);
-        setError('Erro ao registrar venda.');
-      });
+      .catch(() => setError('Erro ao registrar venda.'));
   };
 
-  const handleCloseSnackbar = () => {
-    setSuccess(false);
-  };
+  const handleCloseSnackbar = () => setSuccess(false);
 
   return (
     <DashboardCard title="Registrar Venda" sx={{ maxWidth: '600px', mx: 'auto', mt: 4 }}>
@@ -93,7 +81,7 @@ const VendaPage = () => {
           open={success}
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} // Define a posição para o canto inferior direito
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
           <SnackbarContent
             message={

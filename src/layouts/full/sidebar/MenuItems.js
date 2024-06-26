@@ -1,6 +1,5 @@
 import {
-  IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus
-} from '@tabler/icons';
+  IconAperture, IconLayoutDashboard, IconInfoCircle } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
 
@@ -16,42 +15,10 @@ const Menuitems = [
     icon: IconLayoutDashboard,
     href: '/dashboard',
   },
-  /*{
-    navlabel: true,
-    subheader: 'Utilities',
-  },
-  {
-    id: uniqueId(),
-    title: 'Typography',
-    icon: IconTypography,
-    href: '/ui/typography',
-  },
-  {
-    id: uniqueId(),
-    title: 'Shadow',
-    icon: IconCopy,
-    href: '/ui/shadow',
-  }, */
-  {
-    navlabel: true,
-    subheader: 'Perfil',
-  },
-  {
-    id: uniqueId(),
-    title: 'Perfil',
-    icon: IconLogin,
-    href: '/perfil',
-  },
   {
     navlabel: true,
     subheader: 'Controle',
   },
-  /*{
-    id: uniqueId(),
-    title: 'Icons',
-    icon: IconMoodHappy,
-    href: '/icons',
-  }, */
   {
     id: uniqueId(),
     title: 'Fornecedores',
@@ -66,12 +33,6 @@ const Menuitems = [
     href: '/produtos',
   },
   
- /* {
-    id: uniqueId(),
-    title: 'Sample Page',
-    icon: IconAperture,
-    href: '/sample-page',
-  }, */
   {
     id: uniqueId(),
     title: 'Relatórios',
@@ -84,6 +45,22 @@ const Menuitems = [
     icon: IconAperture,
     href: '/vendas',
   },
+  {
+    navlabel: true,
+    subheader: 'Contato',
+  },
+  {
+    id: uniqueId(),
+    title: 'Sobre nós',
+    icon: IconInfoCircle,
+    href: '/about-us',
+  },
+  {
+    id: uniqueId(),
+    title: 'Entrar em contato',
+    icon: IconInfoCircle,
+    href: '/contact-us',
+  }
 ];
 
 export default Menuitems;
