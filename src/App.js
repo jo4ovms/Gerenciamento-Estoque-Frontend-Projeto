@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { CssBaseline, ThemeProvider, Snackbar, Box, Typography } from '@mui/material';
 import { useRoutes } from 'react-router-dom';
 import Router from './routes/Router';
-import { baselightTheme } from "./theme/DefaultColors";
+import { baselightTheme } from './theme/DefaultColors';
 import AuthService from './services/auth.service';
 
 function App() {
   const routing = useRoutes(Router);
   const theme = baselightTheme;
   const [showReloginMessage, setShowReloginMessage] = useState(false);
-
+  //comentario teste
   useEffect(() => {
     const checkTokenExpiration = () => {
       const user = AuthService.getCurrentUser();
